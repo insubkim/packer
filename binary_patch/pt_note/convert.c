@@ -9,8 +9,12 @@
 const static char *infile = "./hello_world_inskim";
 const static char *outfile = "./hello_world_inskim_converted";
 
-const static int added_file_size = 0xad;
-const static int added_file_offset = 2097152;
+const static int e_entry = 0x800080;
+
+const static int p_align = 0x200000;
+
+const static int added_file_size = 0xb2;
+const static int added_file_offset = 20480;
 const static int added_file_addr = 0x800000;
 
 int main()
@@ -27,7 +31,7 @@ int main()
                     MAP_PRIVATE, fd, 0);
     
     Elf64_Ehdr *ehdr = p;
-    ehdr->e_entry=added_file_addr;
+    ehdr->e_entry=0x800080;
 
     for (size_t pi = 0; pi < ehdr->e_phnum; pi++)
     {

@@ -17,7 +17,7 @@ callee:
 	pop rcx
 	pop rbx
 	pop rax
-	jmp [rel 0x4004a0]
-	; mov rdi, 0x0
-    ; mov rax, 0x3c
-    ; syscall
+	; jmp [rel 0x4004a0]
+	mov rdi, 0x0
+    mov rax, 0x3c
+    syscall
