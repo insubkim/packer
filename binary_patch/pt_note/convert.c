@@ -10,7 +10,7 @@ const static char *infile = "./hello_world_inskim";
 const static char *outfile = "./hello_world_inskim_converted";
 
 const static int added_file_size = 0xad;
-const static int added_file_offset = 20480;
+const static int added_file_offset = 2097152;
 const static int added_file_addr = 0x800000;
 
 int main()
