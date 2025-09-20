@@ -3,6 +3,18 @@
 #include <elf.h>
 
 
+/*  elf type    
+    ElfN_Addr       Unsigned program address, uintN_t
+    ElfN_Off        Unsigned file offset, uintN_t
+    ElfN_Section    Unsigned section index, uint16_t
+    ElfN_Versym     Unsigned version symbol information, uint16_t
+    Elf_Byte        unsigned char
+    ElfN_Half       uint16_t
+    ElfN_Sword      int32_t
+    ElfN_Word       uint32_t
+    ElfN_Sxword     int64_t
+    ElfN_Xword      uint64_t
+*/
 
 // typedef struct
 // {
@@ -63,7 +75,17 @@ int main(int argc, char *argv[]) {
                            ehdr.e_ident[EI_DATA] == ELFDATA2MSB ? "Big Endian" : "Invalid");
     printf(" Version: %d\n", ehdr.e_ident[EI_VERSION]);
     printf(" OS/ABI: %d\n", ehdr.e_ident[EI_OSABI]);
-    printf(" Type: 0x%x\n", ehdr.e_type);
+    /*
+    ET_NONE An unknown type.
+    ET_REL A relocatable file.
+    ET_EXEC An executable file.
+    ET_DYN A shared object.
+    ET_CORE A core file.
+    */
+    const char *elf_type[5] = {
+        "ET_NONE", "ET_REL", "ET_EXEC", "ET_DYN", "ET_CORE"
+    };
+    printf(" Type: 0x%x [%s]\n", ehdr.e_type, elf_type[ehdr.e_type]);
     printf(" Machine: 0x%x\n", ehdr.e_machine);
     printf(" Entry point: 0x%lx\n", (unsigned long)ehdr.e_entry);
     printf(" Program header offset: %ld\n", (long)ehdr.e_phoff);
