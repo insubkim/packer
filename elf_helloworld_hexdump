@@ -20,7 +20,7 @@
 
 0000030 0000 0000 0040 0038 0009 0040 001e 001d
 0000 flag
-0040 ELF header size
+0000 0040 ELF header size
 0038 Program header table entry size
 0009 Program header table entry count
 0040 Section header table entry size
@@ -28,6 +28,14 @@
 001d Section header string table index
 
 0000040 0006 0000 0004 0000 0040 0000 0000 0000
+0006 0000 program header Segment type
+0004 0000 Segment flags
+0040 0000 0000 0000 Segment file offset
+Segment virtual address
+Segment physical address
+Segment size in file
+Segment size in memory
+Segment size in memory
 
 0000050 0040 0040 0000 0000 0040 0040 0000 0000
 

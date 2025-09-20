@@ -34,7 +34,17 @@
 //   Elf64_Half	e_shstrndx;		/* Section header string table index */
 // } Elf64_Ehdr;
 
-
+// typedef struct
+// {
+//   Elf64_Word	p_type;			/* Segment type */
+//   Elf64_Word	p_flags;		/* Segment flags */
+//   Elf64_Off	p_offset;		/* Segment file offset */
+//   Elf64_Addr	p_vaddr;		/* Segment virtual address */
+//   Elf64_Addr	p_paddr;		/* Segment physical address */
+//   Elf64_Xword	p_filesz;		/* Segment size in file */
+//   Elf64_Xword	p_memsz;		/* Segment size in memory */
+//   Elf64_Xword	p_align;		/* Segment alignment */
+// } Elf64_Phdr;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -97,6 +107,82 @@ int main(int argc, char *argv[]) {
     printf(" Section header entry size: %d\n", ehdr.e_shentsize);
     printf(" Section header entry count: %d\n", ehdr.e_shnum);
     printf(" Section header string table index: %d\n", ehdr.e_shstrndx);
+
+    
+    Elf64_Phdr eph;  
+    if (fread(&eph, 1, sizeof(eph), fp) != sizeof(eph)) {
+        perror("fread");
+        fclose(fp);
+        return 1;
+    }
+/*
+                 PT_NULL
+                        The array element is unused and the other
+                        members' values are undefined.  This lets the
+                        program header have ignored entries.
+
+                 PT_LOAD
+                        The array element specifies a loadable segment,
+                        described by p_filesz and p_memsz.  The bytes
+                        from the file are mapped to the beginning of the
+                        memory segment.  If the segment's memory size
+                        p_memsz is larger than the file size p_filesz,
+                        the "extra" bytes are defined to hold the value 0
+                        and to follow the segment's initialized area.
+                        The file size may not be larger than the memory
+                        size.  Loadable segment entries in the program
+                        header table appear in ascending order, sorted on
+                        the p_vaddr member.
+
+                 PT_DYNAMIC
+                        The array element specifies dynamic linking
+                        information.
+
+                 PT_INTERP
+                        The array element specifies the location and size
+                        of a null-terminated pathname to invoke as an
+                        interpreter.  This segment type is meaningful
+                        only for executable files (though it may occur
+                        for shared objects).  However it may not occur
+                        more than once in a file.  If it is present, it
+                        must precede any loadable segment entry.
+
+                 PT_NOTE
+                        The array element specifies the location of notes
+                        (ElfN_Nhdr).
+
+                 PT_SHLIB
+                        This segment type is reserved but has unspecified
+                        semantics.  Programs that contain an array
+                        element of this type do not conform to the ABI.
+
+                 PT_PHDR
+                        The array element, if present, specifies the
+                        location and size of the program header table
+                        itself, both in the file and in the memory image
+                        of the program.  This segment type may not occur
+                        more than once in a file.  Moreover, it may occur
+                        only if the program header table is part of the
+                        memory image of the program.  If it is present,
+                        it must precede any loadable segment entry.
+
+                 PT_LOPROC
+                 PT_HIPROC
+                        Values in the inclusive range [PT_LOPROC,
+                        PT_HIPROC] are reserved for processor-specific
+                        semantics.
+
+                 PT_GNU_STACK
+                        GNU extension which is used by the Linux kernel
+                        to control the state of the stack via the flags
+                        set in the p_flags member.
+*/
+    const char *ph_types[10] = 
+    {
+        "PT_NULL", "PT_LOAD", "PT_DYNAMIC", "PT_INTERP", "PT_NOTE",
+        "PT_SHLIB", "PT_PHDR", "PT_LOPROC", "PT_HIPROC", "PT_GNU_STACK" 
+    };
+    printf(" Program Header type :0x%x [%s]\n", eph.p_type, ph_types[eph.p_type]);
 
     fclose(fp);
     return 0;
