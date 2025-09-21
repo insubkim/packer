@@ -177,12 +177,27 @@ int main(int argc, char *argv[]) {
                         to control the state of the stack via the flags
                         set in the p_flags member.
 */
+    printf("Program Header:\n");
     const char *ph_types[10] = 
     {
         "PT_NULL", "PT_LOAD", "PT_DYNAMIC", "PT_INTERP", "PT_NOTE",
         "PT_SHLIB", "PT_PHDR", "PT_LOPROC", "PT_HIPROC", "PT_GNU_STACK" 
     };
     printf(" Program Header type :0x%x [%s]\n", eph.p_type, ph_types[eph.p_type]);
+    const char *ph_flags[8] = {0,};
+    ph_flags[0b001] = "readable segment"; 
+    ph_flags[0b010] = "writable segment"; 
+    ph_flags[0b100] = "executable segment"; 
+    printf(" Program Header flag :0x%x [%s]\n", eph.p_flags, ph_flags[eph.p_flags]);
+    printf(" Program Header offset :0x%x size : %llu\n", eph.p_offset, sizeof(eph.p_offset));
+    printf(" Program Header virtual address :0x%x\n", eph.p_vaddr);
+    printf(" Program Header segment's physical address :0x%x\n", eph.p_paddr);
+    printf(" Program Header file image of the segment :0x%x\n", eph.p_filesz);
+    printf(" Program Header memory image of the segment :0x%x\n", eph.p_memsz);
+    printf(" Program Header aligned ? :0x%x\n", eph.p_align);
+
+
+
 
     fclose(fp);
     return 0;

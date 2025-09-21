@@ -31,17 +31,17 @@
 0006 0000 program header Segment type
 0004 0000 Segment flags
 0040 0000 0000 0000 Segment file offset
-Segment virtual address
-Segment physical address
-Segment size in file
-Segment size in memory
-Segment size in memory
 
 0000050 0040 0040 0000 0000 0040 0040 0000 0000
+0040 0040 0000 0000 Segment virtual address
+0040 0040 0000 0000 Segment physical address
 
 0000060 01f8 0000 0000 0000 01f8 0000 0000 0000
+01f8 0000 0000 0000 Segment size in file
+01f8 0000 0000 0000 Segment size in memory
 
 0000070 0008 0000 0000 0000 0003 0000 0004 0000
+0008 0000 0000 0000 Program Header align
 
 0000080 0238 0000 0000 0000 0238 0040 0000 0000
 
