@@ -1,0 +1,112 @@
+
+elf type    
+ElfN_Addr       Unsigned program address, uintN_t
+ElfN_Off        Unsigned file offset, uintN_t
+ElfN_Section    Unsigned section index, uint16_t
+ElfN_Versym     Unsigned version symbol information, uint16_t
+Elf_Byte        unsigned char
+ElfN_Half       uint16_t
+ElfN_Sword      int32_t
+ElfN_Word       uint32_t
+ElfN_Sxword     int64_t
+ElfN_Xword      uint64_t
+
+ELF HEADER
+typedef struct
+{
+  unsigned char	e_ident[EI_NIDENT];	/* Magic number and other info */
+  Elf64_Half	e_type;			/* Object file type */
+  Elf64_Half	e_machine;		/* Architecture */
+  Elf64_Word	e_version;		/* Object file version */
+  Elf64_Addr	e_entry;		/* Entry point virtual address */
+  Elf64_Off	e_phoff;		/* Program header table file offset */
+  Elf64_Off	e_shoff;		/* Section header table file offset */
+  Elf64_Word	e_flags;		/* Processor-specific flags */
+  Elf64_Half	e_ehsize;		/* ELF header size in bytes */
+  Elf64_Half	e_phentsize;		/* Program header table entry size */
+  Elf64_Half	e_phnum;		/* Program header table entry count */
+  Elf64_Half	e_shentsize;		/* Section header table entry size */
+  Elf64_Half	e_shnum;		/* Section header table entry count */
+  Elf64_Half	e_shstrndx;		/* Section header string table index */
+} Elf64_Ehdr;
+
+Program Header
+typedef struct
+{
+  Elf64_Word	p_type;			/* Segment type */
+  Elf64_Word	p_flags;		/* Segment flags */
+  Elf64_Off	p_offset;		/* Segment file offset */
+  Elf64_Addr	p_vaddr;		/* Segment virtual address */
+  Elf64_Addr	p_paddr;		/* Segment physical address */
+  Elf64_Xword	p_filesz;		/* Segment size in file */
+  Elf64_Xword	p_memsz;		/* Segment size in memory */
+  Elf64_Xword	p_align;		/* Segment alignment */
+} Elf64_Phdr;
+
+
+PT_NULL
+    The array element is unused and the other
+    members' values are undefined.  This lets the
+    program header have ignored entries.
+
+PT_LOAD
+    The array element specifies a loadable segment,
+    described by p_filesz and p_memsz.  The bytes
+    from the file are mapped to the beginning of the
+    memory segment.  If the segment's memory size
+    p_memsz is larger than the file size p_filesz,
+    the "extra" bytes are defined to hold the value 0
+    and to follow the segment's initialized area.
+    The file size may not be larger than the memory
+    size.  Loadable segment entries in the program
+    header table appear in ascending order, sorted on
+    the p_vaddr member.
+
+PT_DYNAMIC
+    The array element specifies dynamic linking
+    information.
+
+PT_INTERP
+    The array element specifies the location and size
+    of a null-terminated pathname to invoke as an
+    interpreter.  This segment type is meaningful
+    only for executable files (though it may occur
+    for shared objects).  However it may not occur
+    more than once in a file.  If it is present, it
+    must precede any loadable segment entry.
+
+PT_NOTE
+    The array element specifies the location of notes
+    (ElfN_Nhdr).
+
+PT_SHLIB
+    This segment type is reserved but has unspecified
+    semantics.  Programs that contain an array
+    element of this type do not conform to the ABI.
+
+PT_PHDR
+    The array element, if present, specifies the
+    location and size of the program header table
+    itself, both in the file and in the memory image
+    of the program.  This segment type may not occur
+    more than once in a file.  Moreover, it may occur
+    only if the program header table is part of the
+    memory image of the program.  If it is present,
+    it must precede any loadable segment entry.
+
+PT_LOPROC
+PT_HIPROC
+    Values in the inclusive range [PT_LOPROC,
+    PT_HIPROC] are reserved for processor-specific
+    semantics.
+
+PT_GNU_STACK
+    GNU extension which is used by the Linux kernel
+    to control the state of the stack via the flags
+    set in the p_flags member.
+
+PT_GNU_EH_FRAME	 	
+    The array element specifies the location and size of the exception handling information as defined by the .eh_frame_hdr section.
+
+PT_GNU_STACK	     	
+    The p_flags member specifies the permissions on the segment containing the stack and is used to indicate wether the stack should be executable. The absense of this header indicates that the stack will be executable.
