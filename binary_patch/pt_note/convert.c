@@ -31,14 +31,14 @@ int main()
                     MAP_PRIVATE, fd, 0);
     
     Elf64_Ehdr *ehdr = p;
-    ehdr->e_entry=0x800080;
+    ehdr->e_entry = e_entry;
 
     for (size_t pi = 0; pi < ehdr->e_phnum; pi++)
     {
         Elf64_Phdr *phdr = ((Elf64_Phdr *)(p + ehdr->e_phoff)) + pi;
         if (phdr->p_type == PT_NOTE)
         {
-            phdr->p_align = 0x200000;
+            phdr->p_align = p_align;
             phdr->p_filesz = added_file_size;
             phdr->p_memsz = added_file_size;
             phdr->p_offset = added_file_offset;
