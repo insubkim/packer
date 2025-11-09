@@ -11,10 +11,10 @@ const static char *outfile = "./hello_world_inskim_converted";
 
 const static int e_entry = 0x800080;
 
-const static int p_align = 0x200000;
+const static int p_align = 0x1000;
 
-const static int added_file_size = 0xb2;
-const static int added_file_offset = 20480;
+const static int added_file_size = 0xad;
+const static int added_file_offset = 12288;
 const static int added_file_addr = 0x800000;
 
 int main()
@@ -22,10 +22,10 @@ int main()
     int fd = open(infile, O_RDONLY);
     
     size_t file_size = lseek(fd, 0, SEEK_END);
-    printf("file size : %llu", file_size);
+    printf("file size : %llu\n", file_size);
 
     size_t mapped_size = (file_size + 0xfff) & ~(0xfff);
-    printf("mapped size : %llu", mapped_size);
+    printf("mapped size : %llu\n", mapped_size);
 
     void *p = mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, 
                     MAP_PRIVATE, fd, 0);
