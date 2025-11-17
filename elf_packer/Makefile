@@ -33,7 +33,7 @@ all: $(NAME)
 
 $(NAME): | MAKE_MAN
 
-MAKE_MAN: MAKE_LIBS $(HDRS_DIR)*.h $(OBJS)
+MAKE_MAN: $(HDRS_DIR)*.h $(OBJS)
 		touch MAKE_MAN
 		rm -f MAKE_BONUS
 		
