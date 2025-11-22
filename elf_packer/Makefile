@@ -18,7 +18,8 @@ OBJS += $(addprefix $(OBJS_DIR), $(notdir $(SRCS:.c=.o)))
 # -------------------------------- COMPILATE --------------------------------- #
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -g
+CFLAGS	= -g
+# CFLAGS	= -Wall -Werror -Wextra -g
 # -g -fsanitize=address
 RM		= rm -rf
 MD		= mkdir -p 
@@ -31,24 +32,21 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS_DIR)*.h
 
 all: $(NAME)
 
-$(NAME): | MAKE_MAN
+$(NAME): | .MAKE_MAN
 
-MAKE_MAN: $(HDRS_DIR)*.h $(OBJS)
-		touch MAKE_MAN
-		rm -f MAKE_BONUS
+.MAKE_MAN: $(HDRS_DIR)*.h $(OBJS)
+		touch .MAKE_MAN
+		rm -f .MAKE_BONUS
+		$(CC) $(CFLAGS) $(OBJS) $(CFLAGS) -o $(NAME)
 		
 clean:
-	make clean -C $(LIBFT_DIR)
 	$(RM) $(OBJS_DIR) $(BONUS_OBJS_DIR)
-	$(RM) MAKE_MAN MAKE_BONUS MAKE_LIBS
+	$(RM) .MAKE_MAN .MAKE_BONUS .MAKE_LIBS
 
-fclean:
-	make clean
-	make clean -C $(MLX_DIR)
+fclean: clean
 	$(RM) $(LIBS) $(NAME) 
 
-re:
-	make fclean
+re: fclean
 	make all
 
 .PHONY:		all clean fclean re bonus
