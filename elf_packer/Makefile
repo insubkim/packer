@@ -19,6 +19,7 @@ OBJS += $(addprefix $(OBJS_DIR), $(notdir $(SRCS:.c=.o)))
 
 CC		= cc
 CFLAGS	= -g
+DEBUG   = 1
 # CFLAGS	= -Wall -Werror -Wextra -g
 # -g -fsanitize=address
 RM		= rm -rf
@@ -28,7 +29,7 @@ MD		= mkdir -p
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS_DIR)*.h
 	$(MD) $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@ -DDEBUG=$(DEBUG)
 
 all: $(NAME)
 
@@ -37,7 +38,7 @@ $(NAME): | .MAKE_MAN
 .MAKE_MAN: $(HDRS_DIR)*.h $(OBJS)
 		touch .MAKE_MAN
 		rm -f .MAKE_BONUS
-		$(CC) $(CFLAGS) $(OBJS) $(CFLAGS) -o $(NAME)
+		$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(CFLAGS) -o $(NAME)
 		
 clean:
 	$(RM) $(OBJS_DIR) $(BONUS_OBJS_DIR)
