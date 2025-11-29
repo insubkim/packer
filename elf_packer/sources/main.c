@@ -25,15 +25,12 @@ int main(int argc, char *argv[])
         return print_error(FILE_NOT_FOUND, ERRNO_TRUE);
     
     size_t file_size = lseek(fd, 0, SEEK_END);
-    assert(file_size != (size_t)-1);
     print_debug("file [%s] size : %llu\n", argv[1], (unsigned long long)file_size);
 
     // read file
     lseek(fd, 0, SEEK_SET);
     char *file_buffer = malloc(file_size);
-    assert(file_buffer != NULL);
     ssize_t read_bytes = read(fd, file_buffer, file_size);
-    assert(read_bytes == (ssize_t)file_size);
     close(fd);
 
     // parse elf
