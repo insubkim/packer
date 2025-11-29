@@ -10,40 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "file.h"
 #include "print_utils.h"
 
-inline int print_error(error_t error, int use_errno)
+size_t read_file(const char *filename, char **file_buffer)
 {
-    if (use_errno)
-        perror("Error");
-    switch (error)
-    {
-    case WRONG_ARGS:
-            fprintf(stderr, "Usage: elf_packer <input_elf_file>\n");
-            break;
-    case FILE_NOT_FOUND:
-            fprintf(stderr, "Error: File not found.\n");
-            break;
-    case INVALID_ELF:
-            fprintf(stderr, "Error: Invalid ELF file.\n");
-            break;
-    case MEMORY_ALLOCATION_FAILED:
-            fprintf(stderr, "Error: Memory allocation failed.\n");
-            break;
-    default:
-        assert(0 && "Unknown error type");        
-    }
-    return -1;
-}
-
-inline int print_debug(const char *format, ...)
-{
-    if (!DEBUG)
-        return 0;
+    assert(filename != NULL);
+    // open file
+    int fd = open(filename, O_RDWR);
+    if (fd < 0) 
+        return print_error(FILE_NOT_FOUND, ERRNO_TRUE) & 0x0;
     
-    va_list args;
-    va_start(args, format);
-    int ret = vprintf(format, args);
-    va_end(args);
-    return ret;
+    // get file size
+    size_t file_size = lseek(fd, 0, SEEK_END);
+    print_debug("file [%s] size : %llu\n", filename, (unsigned long long)file_size);
+
+    *file_buffer = malloc(file_size);
+    if (!*file_buffer)
+        return print_error(MEMORY_ALLOCATION_FAILED, ERRNO_FALSE) & 0x0;
+
+    // read file
+    ssize_t read_bytes = read(fd, *file_buffer, file_size);
+    if (read_bytes != file_size)
+    {
+        free(*file_buffer);
+        return print_error(FILE_NOT_FOUND, ERRNO_TRUE) & 0x0;
+    }
+
+    close(fd);
+    return file_size;
 }

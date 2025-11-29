@@ -9,17 +9,14 @@
 /*   Updated: 2025/11/17 20:51:41 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#ifndef FILE_H
+# define FILE_H
 
-#ifndef MAIN_H
-# define MAIN_H
-# define FALSE 0
-# define TRUE 1
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <fcntl.h>
 #include <assert.h>
-#include <elf.h>
 #include <unistd.h>
+#include <stdlib.h>
+
+size_t read_file(const char *filename, char **file_buffer);
 
 #endif

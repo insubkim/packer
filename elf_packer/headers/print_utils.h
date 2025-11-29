@@ -17,12 +17,14 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <assert.h>
 
 typedef enum e_error
 {
     WRONG_ARGS,
     FILE_NOT_FOUND,
     INVALID_ELF,
+    MEMORY_ALLOCATION_FAILED,
     // Add more error types as needed
 } error_t;
 

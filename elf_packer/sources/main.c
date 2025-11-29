@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "main.h"
+#include "file.h"
+#include "print_utils.h"
+#include "elf_parser.h"
+#include "stub.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,19 +23,11 @@ int main(int argc, char *argv[])
     if (argc != 2) 
         return print_error(WRONG_ARGS, ERRNO_FALSE);
     
-    // open file
-    int fd = open(argv[1], O_RDWR);
-    if (fd < 0) 
-        return print_error(FILE_NOT_FOUND, ERRNO_TRUE);
-    
-    size_t file_size = lseek(fd, 0, SEEK_END);
-    print_debug("file [%s] size : %llu\n", argv[1], (unsigned long long)file_size);
-
     // read file
-    lseek(fd, 0, SEEK_SET);
-    char *file_buffer = malloc(file_size);
-    ssize_t read_bytes = read(fd, file_buffer, file_size);
-    close(fd);
+    char *file_buffer = NULL;
+    size_t size = read_file(argv[1], &file_buffer);
+    if (size == 0)
+        return -1;
 
     // parse elf
     t_elf elf = parse_elf(file_buffer);
@@ -44,6 +40,8 @@ int main(int argc, char *argv[])
     }
 
     // create stub
+    
+
     // set original ep to end of stub jmp point
     // set stub info to pt_note
     // add padding
