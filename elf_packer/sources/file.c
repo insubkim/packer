@@ -29,9 +29,10 @@ size_t read_file(const char *filename, char **file_buffer)
     if (!*file_buffer)
         return print_error(MEMORY_ALLOCATION_FAILED, ERRNO_FALSE) & 0x0;
 
+    lseek(fd, 0, SEEK_SET);
     // read file
     ssize_t read_bytes = read(fd, *file_buffer, file_size);
-    if (read_bytes != file_size)
+    if (read_bytes > 0 && (size_t)read_bytes != file_size)
     {
         free(*file_buffer);
         return print_error(FILE_NOT_FOUND, ERRNO_TRUE) & 0x0;

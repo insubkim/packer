@@ -35,14 +35,18 @@ all: $(NAME)
 
 $(NAME): | .MAKE_MAN
 
-.MAKE_MAN: $(HDRS_DIR)*.h $(OBJS)
+.MAKE_MAN: stub.h $(HDRS_DIR)*.h $(OBJS)
 		touch .MAKE_MAN
 		rm -f .MAKE_BONUS
 		$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(CFLAGS) -o $(NAME)
-		
+
+stub.h: stub.s
+	nasm -f bin stub.s -o stub.bin
+	xxd -i stub.bin > stub.h
+
 clean:
 	$(RM) $(OBJS_DIR) $(BONUS_OBJS_DIR)
-	$(RM) .MAKE_MAN .MAKE_BONUS .MAKE_LIBS
+	$(RM) .MAKE_MAN .MAKE_BONUS .MAKE_LIBS 
 
 fclean: clean
 	$(RM) $(LIBS) $(NAME) 
