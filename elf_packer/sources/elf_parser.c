@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   elf_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:51:01 by insub             #+#    #+#             */
-/*   Updated: 2025/11/17 21:07:58 by insub            ###   ########.fr       */
+/*   Updated: 2025/12/11 23:18:00 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,22 @@ int check_pt_note(t_elf elf)
     print_debug("No PT_NOTE segment found.\n");
 
     return FALSE;
+}
+
+Elf64_Addr find_max_vaddr(t_elf elf)
+{
+    Elf64_Addr max_vaddr = 0;
+    
+    for (int i = 0; i < elf.ehdr->e_phnum; i++)
+    {
+        if (elf.phdrs[i].p_type == PT_LOAD)
+        {
+            Elf64_Addr end_vaddr = elf.phdrs[i].p_vaddr + elf.phdrs[i].p_memsz;
+            if (end_vaddr > max_vaddr)
+                max_vaddr = end_vaddr;
+        }
+    }
+    print_debug("Max Vaddr found: 0x%lx\n", max_vaddr);
+
+    return max_vaddr;
 }

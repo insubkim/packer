@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   elf_parser.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:51:01 by insub             #+#    #+#             */
-/*   Updated: 2025/11/17 21:07:58 by insub            ###   ########.fr       */
+/*   Updated: 2025/12/11 23:07:32 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_elf
 
 t_elf parse_elf(char *file_buffer);
 int   check_pt_note(t_elf elf);
+Elf64_Addr find_max_vaddr(t_elf elf);
 
 const static char *ph_types[10] = 
 {

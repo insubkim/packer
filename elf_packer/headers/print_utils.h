@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print_utils.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:51:01 by insub             #+#    #+#             */
-/*   Updated: 2025/11/17 21:07:58 by insub            ###   ########.fr       */
+/*   Updated: 2025/12/11 23:30:23 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ typedef enum e_error
     FILE_NOT_FOUND,
     INVALID_ELF,
     MEMORY_ALLOCATION_FAILED,
-    // Add more error types as needed
+    PLACEHOLDER_FIND_FAILED,
+    PADDING_WRITE_ERROR,
+    PATCH_HEADER_WRITE_ERROR,
+    STUB_WRITE_ERROR
 } error_t;
 
 int print_error(error_t error, int use_errno);
