@@ -42,7 +42,7 @@ all: $(NAME)
 
 $(NAME): | .MAKE_MAN
 
-$(STUB):
+$(STUB):$(SRCS_S)
 	$(MD) $(dir $@)
 	nasm -f bin $(SRCS_DIR)stub.s -o $(OBJS_DIR)stub.bin
 	cd $(OBJS_DIR) && xxd -i stub.bin > ../$(HDRS_DIR)stub.h

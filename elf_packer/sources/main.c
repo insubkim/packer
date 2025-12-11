@@ -6,10 +6,10 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:51:01 by insub             #+#    #+#             */
-/*   Updated: 2025/11/17 21:07:58 by insub            ###   ########.fr       */
+/*   Updated: 2025/12/11 21:53:14 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "main.h"
+
 #include "file.h"
 #include "print_utils.h"
 #include "elf_parser.h"
@@ -18,6 +18,7 @@
 
 #define PAGE_SIZE 0x1000
 #define DEBUG 1
+#define PLACEHOLDER 0x1122334455667788
 
 uint64_t align_up(uint64_t val, uint64_t align)
 {
@@ -84,8 +85,7 @@ int main(int argc, char *argv[])
     }
     memcpy(patched_stub, stub_bin, stub_bin_len);
 
-    // Placeholder (0x1122334455667788) 찾아서 OEP로 교체
-    uint64_t placeholder = 0x1122334455667788; 
+    uint64_t placeholder = PLACEHOLDER; 
     int patched = FALSE;
 
     for (unsigned int i = 0; i < stub_bin_len - 8; i++)
