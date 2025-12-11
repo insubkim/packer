@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:51:01 by insub             #+#    #+#             */
-/*   Updated: 2025/12/11 21:53:14 by insub            ###   ########.fr       */
+/*   Updated: 2025/12/11 22:57:29 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define PAGE_SIZE 0x1000
 #define DEBUG 1
 #define PLACEHOLDER 0x1122334455667788
+#define KEY 0xCCCCCCCCCCCCCCCC
 
 uint64_t align_up(uint64_t val, uint64_t align)
 {
@@ -107,6 +108,31 @@ int main(int argc, char *argv[])
         goto cleanup;
     }
 
+    // PT_LOAD 섹션을 찾아서 암호화
+    for (int i = 0; i < elf.ehdr->e_phnum; i++)
+    {
+        Elf64_Phdr *phdr = &elf.phdrs[i];
+        
+        if (phdr->p_type != PT_LOAD || (phdr->p_flags & PF_X) == FALSE)
+            continue;
+
+        //  첫 PT_LOAD 는 헤더 이후 암호화.
+        if (phdr->p_offset == 0) {
+            encrypt_start = phdr->p_offset + header_size;
+            encrypt_len   = phdr->p_filesz - header_size;
+        } else {
+            encrypt_start = phdr->p_offset;
+            encrypt_len   = phdr->p_filesz;
+        }
+        
+        // 3. XOR 암호화 수행
+        xor_encrypt(buffer + encrypt_start, encrypt_len, key);
+        
+        // stub start_address, key, size 변경
+
+        break; // 첫 번째 실행 가능한 PT_LOAD만 암호화
+    }
+    
     // PT_NOTE -> PT_LOAD 변환
     Elf64_Phdr *target_phdr = NULL;
     for (int i = 0; i < elf.ehdr->e_phnum; i++)
