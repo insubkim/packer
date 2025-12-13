@@ -15,6 +15,7 @@
 # define FALSE 0
 # define TRUE 1
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>

@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "main.h"
 #include "file.h"
 #include "print_utils.h"
 #include "elf_parser.h"
 #include "stub.h"
-#include <string.h>
 
 #define PAGE_SIZE 0x1000
 #define DEBUG 1
-#define PLACEHOLDER 0x1122334455667788
+#define ORIGINAL_ENTRY_POINT 0x1122334455667788
 #define OUTPUT_FILENAME "woody"
 
 uint64_t align_up(uint64_t val, uint64_t align)
@@ -26,14 +26,14 @@ uint64_t align_up(uint64_t val, uint64_t align)
     return (val + align - 1) & ~(align - 1);
 }
 
-int patch_placeholder(Elf64_Addr original_entry, uint64_t placeholder)
+int patch_placeholder(uint64_t *target, unsigned int target_len, Elf64_Addr original_entry, uint64_t placeholder)
 {
-    uint64_t placeholder = PLACEHOLDER; 
     int patched = FALSE;
 
-    for (unsigned int i = 0; i < stub_bin_len - 8; i++)
+    for (unsigned int i = 0; i < target_len - 8; i++)
     {
-        uint64_t *ptr = (uint64_t *)&patched_stub[i];
+        uint64_t *ptr = target + i;
+        
         if (*ptr == placeholder)
         {
             *ptr = (uint64_t)original_entry;
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     memcpy(patched_stub, stub_bin, stub_bin_len);
 
     // 스텁 내 원본 Entry Point 점프 주소 패치
-    if (patch_placeholder(original_entry, PLACEHOLDER) == FALSE)
+    if (patch_placeholder(patched_stub, stub_bin_len, original_entry, ORIGINAL_ENTRY_POINT) == FALSE)
     {
         exit_code = -1;
         goto cleanup;
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
         goto cleanup_write;
     }
 
-    print_debug("\n[SUCCESS] Packed file created: %s\n", out_name);
+    print_debug("\n[SUCCESS] Packed file created: %s\n", OUTPUT_FILENAME);
 
 cleanup_write:
     close(fd_out);

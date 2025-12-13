@@ -13,6 +13,8 @@
 #ifndef ELF_PARSER_H
 # define ELF_PARSER_H
 
+#include <elf.h>
+
 typedef struct s_elf
 {
     Elf64_Ehdr    *ehdr;

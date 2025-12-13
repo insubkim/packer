@@ -2,6 +2,7 @@
 # ---------------------------------- NAME ------------------------------------ #
 
 NAME = woody_woodpacker
+DUMMY = woody
 
 # ------------------------------- DIRECTORIES -------------------------------- #
 
@@ -57,7 +58,7 @@ clean:
 	$(RM) .MAKE_MAN .MAKE_BONUS .MAKE_LIBS 
 
 fclean: clean
-	$(RM) $(LIBS) $(NAME) 
+	$(RM) $(LIBS) $(NAME) $(DUMMY)
 
 re: fclean
 	make all
